@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="../static/css/main.css">
-<title>Drone Inventory API</title>
+<title>Car Show API</title>
 </head>
 <body>
 
@@ -22,23 +22,31 @@
         <div>
             <ul id="horizontal-list">
                 <a href="{{ url_for('site.home') }}">
-                    <li>The Coding Drones Project</li>
+                    <li>The Drone Collection</li>
                 </a>
-                <a href="">
-                    <li>Donate</li>
+                <a href="{{ url_for('site.home') }}">
+                    <li>Home</li>
                 </a>
-                <a href="">
+
+                {% if current_user.is_authenticated %}
+
+                <a href="{{ url_for('site.profile') }}">
                     <li>Profile</li>
                 </a>
+                <a href="{{ url_for('auth.logout') }}">
+                    <li>Logout</li>
+                </a>
+
+                {% else %}
+                
                 <a href="{{ url_for('auth.signup') }}">
                     <li>Sign Up</li>
                 </a>
                 <a href="{{ url_for('auth.signin') }}">
                     <li>Sign In</li>
                 </a>
-                <a href="">
-                    <li>Logout</li>
-                </a>
+                
+                {% endif %}
             </ul>
         </div>
     </nav>

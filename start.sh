@@ -1,0 +1,1 @@
+gunicorn"drone_invenotry:app"

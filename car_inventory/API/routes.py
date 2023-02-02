@@ -11,9 +11,9 @@ def getdata(our_user):
     return {'some': 'value'}
 
 #Create Drone Endpoint 
-@api.route('/drones', methods = ['POST'])
+@api.route('/car', methods = ['POST'])
 @token_required
-def create_drone(our_user):
+def create_car(our_user):
     name = request.json['name']
     description = request.json['description']
     price = request.json['price']

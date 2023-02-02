@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 import uuid 
 from datetime import datetime 
 
+
 #Adding Flask security for passwords
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -23,7 +24,7 @@ ma = Marshmallow()
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.String, primary_key = True)
     first_name = db.Column(db.String(150), nullable = True, default = '')
     last_name = db.Column(db.String(150), nullable = True, default = '')
@@ -32,7 +33,7 @@ class User(db.Model):
     token = db.Column(db.String, default = '', unique = True)
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     drone = db.relationship('Drone', backref = 'owner', lazy = True)
-
+    
     def __init__(self, email, password, first_name = '', last_name = '', id = '',  token = ''):
         self.id = self.set_id()
         self.password = self.set_password(password)
@@ -55,7 +56,7 @@ class User(db.Model):
     
     def __repr__(self):
         return f"User {self.email} has been added to the database!"
-            
+    
 class Drone(db.Model):
     id = db.Column(db.String, primary_key = True)
     name = db.Column(db.String(150))
@@ -71,7 +72,8 @@ class Drone(db.Model):
     random_joke = db.Column(db.String)
     user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
     
-    def __init__ (self, name, description, price, camera_quality, flight_time, max_speed, dimnesions, weight, cost_of_porduction, series, random_joke, user_token, id = ''):
+    
+    def __init__ (self, name, description, price, camera_quality, flight_time, max_speed, dimnesions, weight, cost_of_porduction, series,random_joke, user_token, id = ''):
         self.id = self.set_id()
         self.name = name
         self.description = description 
@@ -85,7 +87,7 @@ class Drone(db.Model):
         self.series = series
         self.random_joke = random_joke
         self.user_token = user_token 
-    
+        
     def set_id(self):
         return secrets.token_urlsafe()
     
@@ -94,9 +96,8 @@ class Drone(db.Model):
     
 class DroneSchema(ma.Schema):
     class Meta:
-        fields = ['id', 'name', 'description', 'price', 'camera_quality', 'flight_time', 'max_speed', 'dimensions', 'weight', 'cost_of_production', 'series', 'random_joke' ]
+        fields = ['id', 'name', 'description', 'price', 'camera_quality', 'flight_time', 'max_speed', 'dimensions', 'weight', 'cost_of_production', 'series', 'random_joke']
         
             
 drone_schema = DroneSchema()
 drones_schema = DroneSchema(many=True)       
-        

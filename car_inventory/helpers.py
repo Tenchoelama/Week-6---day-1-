@@ -36,8 +36,29 @@ def token_required(our_flask_function):
         return our_flask_function(our_user, *args, **kwargs)
     return decorated
 
+def random_joke_generator():
+    
+   
+
+    url = "https://random-stuff-api.p.rapidapi.com/joke/random"
+
+    querystring = {"exclude":"nothing"}
+
+    headers = {
+        "Authorization": "HHoc7WMgiPcv",
+        "X-RapidAPI-Key": "5d34f87f22msh008fd5d2563af89p125e75jsnf48472b1c3df",
+        "X-RapidAPI-Host": "random-stuff-api.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    data = response.json()
+    return data['message']
+            
+            
 class JSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, decimal.Decimal):
             return str(obj)
         return super(JSONEncoder, self).default(obj)
+
